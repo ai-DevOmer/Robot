@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OMER AI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>PALESTINE AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #111B21;
-            --bg-secondary: #0B141A;
-            --text-primary: #E9EDEF;
-            --text-secondary: #8696A0;
-            --border-color: #2A3942;
-            --accent-color: #25D366;
-            --user-message-bg: #005C4B;
-            --ai-message-bg: #202C33;
+            --bg-primary: #0F1C2E; /* Dark Blue-Gray */
+            --bg-secondary: #1A2A40; /* Slightly lighter Dark Blue-Gray */
+            --text-primary: #E0E6EB; /* Off-white for readability */
+            --text-secondary: #8BA4B8; /* Muted blue-gray for secondary text */
+            --border-color: #2F455C; /* Darker blue-gray for borders */
+            --accent-color: #00BCD4; /* Cyan/Teal - techy and sleek */
+            --user-message-bg: #00796B; /* Dark Teal for user messages */
+            --ai-message-bg: #263238; /* Darker gray-blue for AI messages */
+            --hover-color: #00ACC1; /* Slightly darker accent on hover */
         }
 
         * {
@@ -25,7 +26,7 @@
 
         body, html {
             height: 100%;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Montserrat', sans-serif;
             background-color: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
@@ -35,15 +36,18 @@
         .container {
             display: flex;
             height: 100vh;
-            max-width: 1200px;
+            max-width: 1400px; /* Slightly wider container */
             margin: 0 auto;
+            border-radius: 12px; /* Rounded corners for the entire app */
+            overflow: hidden; /* Ensures rounded corners are visible */
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
         }
 
         .sidebar {
-            width: 260px;
+            width: 280px; /* Slightly wider sidebar */
             background-color: var(--bg-secondary);
             border-right: 1px solid var(--border-color);
-            padding: 20px;
+            padding: 25px; /* More padding */
             display: flex;
             flex-direction: column;
             position: fixed;
@@ -63,20 +67,40 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 30px; /* More space */
+        }
+
+        .sidebar-header h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--accent-color); /* Accent color for the title */
+            font-size: 1.8em;
         }
 
         .new-chat-btn {
             display: flex;
             align-items: center;
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 10px;
-            border-radius: 6px;
+            background-color: transparent; /* Transparent background */
+            border: 1px solid var(--accent-color); /* Accent border */
+            color: var(--accent-color);
+            padding: 12px 15px; /* More padding */
+            border-radius: 8px; /* Slightly more rounded */
             cursor: pointer;
-            margin-bottom: 20px;
-            transition: background-color 0.3s;
+            margin-bottom: 25px;
+            transition: all 0.3s ease; /* Smooth transition for all properties */
+            font-weight: 500;
+        }
+
+        .new-chat-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-secondary); /* Text changes to sidebar background */
+            transform: translateY(-2px); /* Slight lift effect */
+            box-shadow: 0 4px 10px rgba(0, 188, 212, 0.3); /* Accent glow */
+        }
+
+        .new-chat-btn svg {
+            margin-right: 12px;
+            color: inherit; /* Inherit color from parent for hover effect */
         }
 
         .main-content {
@@ -84,114 +108,171 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
+            background-color: var(--bg-primary); /* Consistent with body background */
         }
 
         .mobile-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
+            padding: 18px 20px; /* More padding */
             background-color: var(--bg-secondary);
             border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .mobile-header h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--accent-color);
+            font-size: 1.6em;
         }
 
         .mobile-header-btn {
             background: none;
             border: none;
             cursor: pointer;
+            color: var(--text-primary);
+            transition: color 0.3s;
+        }
+
+        .mobile-header-btn:hover {
+            color: var(--accent-color);
         }
 
         .chat-container {
             flex-grow: 1;
             overflow-y: auto;
-            padding: 20px;
+            padding: 25px; /* More padding */
             display: flex;
             flex-direction: column;
-            padding-bottom: 100px;
+            padding-bottom: 120px; /* Space for input */
+            gap: 15px; /* Space between messages */
         }
 
         .message {
-            max-width: 90%;
-            width: 100%;
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 10px;
+            max-width: 80%; /* Slightly narrower messages */
+            width: fit-content; /* Adjust width to content */
+            margin: 0; /* Remove margin-top/bottom */
+            padding: 15px 20px; /* More horizontal padding */
+            border-radius: 18px; /* More rounded */
             align-self: flex-start;
+            word-wrap: break-word; /* Ensure long words break */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Subtle shadow for messages */
+        }
+
+        .message p {
+            margin: 0;
+            white-space: pre-wrap; /* Preserve whitespace and breaks */
         }
 
         .message img {
             max-width: 100%;
-            max-height: 300px;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            max-height: 250px; /* Slightly smaller images */
+            border-radius: 12px; /* Rounded corners for images */
+            margin-top: 10px; /* Space above image */
+            display: block; /* Ensure image takes full width */
         }
 
         .user-message {
             background-color: var(--user-message-bg);
             align-self: flex-end;
+            color: #E0F2F1; /* Lighter text on dark teal */
+            border-bottom-right-radius: 4px; /* Tweak one corner for user messages */
         }
 
         .ai-message {
             background-color: var(--ai-message-bg);
             align-self: flex-start;
+            color: var(--text-primary);
+            border-bottom-left-radius: 4px; /* Tweak one corner for AI messages */
         }
 
         .input-container {
-            position: fixed;
+            position: sticky; /* Sticky to stay at the bottom */
             bottom: 0;
             left: 0;
             width: 100%;
-            padding: 15px;
+            padding: 15px 20px;
             background-color: var(--bg-secondary);
             border-top: 1px solid var(--border-color);
             display: flex;
-            align-items: center;
+            align-items: flex-end; /* Align items to the bottom for multi-line input */
+            gap: 10px; /* Space between input and button */
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3); /* Stronger shadow on input container */
         }
 
         .input-wrapper {
             flex-grow: 1;
             position: relative;
             display: flex;
-            align-items: center;
+            align-items: flex-end; /* Align to bottom */
+            background-color: var(--bg-primary); /* Darker background for input field */
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            padding-right: 45px; /* Space for icons */
         }
 
         #message-input {
             width: 100%;
-            padding: 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            padding: 12px 15px; /* Padding for input */
+            border: none; /* No border as wrapper has it */
+            border-radius: 10px;
             font-size: 16px;
             resize: none;
-            max-height: 150px;
+            max-height: 120px; /* Max height for input */
             overflow-y: auto;
+            background-color: transparent; /* Transparent to show wrapper background */
+            color: var(--text-primary);
+            outline: none; /* No outline on focus */
+            font-family: 'Inter', sans-serif;
+        }
+
+        #message-input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.7;
         }
 
         .icon-container {
             position: absolute;
             right: 10px;
+            bottom: 10px; /* Align icons to the bottom */
             display: flex;
             align-items: center;
+            gap: 8px; /* Space between icons */
         }
 
         .icon {
             cursor: pointer;
-            margin-left: 10px;
             color: var(--text-secondary);
             transition: color 0.3s;
+        }
+
+        .icon:hover {
+            color: var(--accent-color);
         }
 
         .send-btn {
             background-color: var(--accent-color);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            margin-left: 10px;
+            padding: 12px; /* Square button */
+            border-radius: 10px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .send-btn:hover:not(:disabled) {
+            background-color: var(--hover-color);
+            transform: translateY(-2px);
         }
 
         .send-btn:disabled {
             background-color: var(--border-color);
+            color: var(--text-secondary);
             cursor: not-allowed;
         }
 
@@ -201,7 +282,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6); /* Darker overlay */
             display: none;
             z-index: 999;
         }
@@ -210,11 +291,57 @@
             display: block;
         }
 
+        /* Markdown Basic Styling */
+        .ai-message code {
+            background-color: rgba(0, 188, 212, 0.1); /* Light accent background for inline code */
+            color: var(--accent-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Roboto Mono', monospace; /* Monospace font for code */
+            font-size: 0.9em;
+        }
+
+        .ai-message pre {
+            background-color: #0B141A; /* Darker background for code blocks */
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto; /* Scroll for long lines */
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .ai-message pre code {
+            background-color: transparent;
+            color: #E0E6EB; /* Lighter color for code text */
+            padding: 0;
+            font-size: 1em;
+            border-radius: 0;
+        }
+
+        .ai-message h1, .ai-message h2, .ai-message h3 {
+            color: var(--accent-color);
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+        }
+
+        .ai-message a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .ai-message a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
+
         @media (min-width: 768px) {
             .sidebar {
-                width: 260px;
+                width: 280px;
                 position: static;
                 transform: translateX(0);
+                border-radius: 12px 0 0 12px; /* Rounded left corners */
             }
 
             .mobile-header {
@@ -222,19 +349,25 @@
             }
 
             .main-content {
-                width: calc(100% - 260px);
-                margin-left: 260px;
+                width: calc(100% - 280px);
+                margin-left: 0; /* No margin-left when sidebar is static */
+                border-radius: 0 12px 12px 0; /* Rounded right corners */
             }
 
             .input-container {
-                position: static;
+                position: relative; /* Not fixed, but sticky within main-content */
+                bottom: 0;
+                left: 0;
                 width: 100%;
-                bottom: auto;
-                left: auto;
+                border-radius: 0 0 12px 0; /* Rounded bottom right corner */
+            }
+
+            .chat-container {
+                padding-bottom: 20px; /* Reduce padding when input is not fixed */
             }
 
             .message {
-                max-width: 700px;
+                max-width: 600px; /* Max width for desktop messages */
             }
         }
 
@@ -245,12 +378,11 @@
 </head>
 <body>
     <div class="overlay" id="sidebar-overlay"></div>
-    
+
     <div class="container">
-        <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <h2>OmerAi</h2>
+                <h2>PALESTINE AI</h2>
                 <button class="mobile-header-btn" id="close-sidebar">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -265,9 +397,8 @@
                 </svg>
                 New conversation
             </button>
-        </div>
+            </div>
 
-        <!-- Main Content -->
         <div class="main-content">
             <div class="mobile-header">
                 <button class="mobile-header-btn" id="open-sidebar">
@@ -277,7 +408,7 @@
                         <line x1="3" y1="18" x2="21" y2="18"></line>
                     </svg>
                 </button>
-                <h2>OMER AI</h2>
+                <h2> اسالني عن فلسطين وسوف اجاوبك❤️‍🔥</h2>
                 <button class="mobile-header-btn" id="new-chat-mobile">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -286,13 +417,14 @@
                 </button>
             </div>
 
-            <div class="chat-container" id="chat-container"></div>
+            <div class="chat-container" id="chat-container">
+                </div>
 
             <div class="input-container">
                 <div class="input-wrapper">
-                    <textarea 
-                        id="message-input" 
-                        placeholder="Send a message"
+                    <textarea
+                        id="message-input"
+                        placeholder="Send a message..."
                         rows="1"
                     ></textarea>
                     <div class="icon-container">
@@ -322,7 +454,7 @@
         // Replace these with your actual API keys
         // WARNING: Do NOT use API keys client-side in production; use a backend server
         const GEMINI_API_KEY = 'AIzaSyB66dpDKO1WLd5tIHvsTuVryIPXiXbEedA';
-        const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY';
+        const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY'; // Still needed if you intend to use DALL-E for image generation
 
         let pendingImage = null;
 
@@ -383,7 +515,7 @@
                     sendBtn.disabled = false;
                     galleryIcon.classList.add('hidden');
                     checkmarkIcon.classList.remove('hidden');
-                    messageInput.placeholder = 'Message';
+                    messageInput.placeholder = 'Message with image...';
                 };
                 reader.readAsDataURL(file);
             }
@@ -394,8 +526,8 @@
             pendingImage = null;
             galleryIcon.classList.remove('hidden');
             checkmarkIcon.classList.add('hidden');
-            messageInput.placeholder = 'Mssage';
-            galleryInput.value = '';
+            messageInput.placeholder = 'Send a message...';
+            galleryInput.value = ''; // Clear file input
             sendBtn.disabled = messageInput.value.trim() === '';
         });
 
@@ -403,9 +535,9 @@
         sendBtn.addEventListener('click', async () => {
             const message = messageInput.value.trim();
             const image = pendingImage;
-            pendingImage = null;
+            pendingImage = null; // Reset pending image after sending
 
-            // Combine text and image into a single message
+            // Add user message to chat immediately
             if (message || image) {
                 let content = '';
                 if (message) content += `<p>${message}</p>`;
@@ -413,27 +545,28 @@
                 addMessage(content, true);
             }
 
+            // Clear input and reset state
             messageInput.value = '';
             messageInput.style.height = 'auto';
             sendBtn.disabled = true;
             galleryIcon.classList.remove('hidden');
             checkmarkIcon.classList.add('hidden');
-            messageInput.placeholder = 'Message';
-            galleryInput.value = '';
+            messageInput.placeholder = 'Send a message...';
+            galleryInput.value = ''; // Clear file input
 
-            // Handle image generation command
-            if (message.toLowerCase().startsWith('generate image')) {
-                const prompt = message.substring('generate image'.length).trim();
+            // Handle image generation command (if you keep this feature)
+            if (message.toLowerCase().startsWith('generate image:')) {
+                const prompt = message.substring('generate image:'.length).trim();
                 if (prompt) {
-                    addMessage(`Generating image: ${prompt}`, true);
+                    addMessage(`Generating image based on: "${prompt}"...`, false); // AI confirmation
                     const imageUrl = await generateImage(prompt);
                     if (imageUrl) {
                         addMessage(`<img src="${imageUrl}" alt="Generated image">`, false);
                     } else {
-                        addMessage('Sorry, I couldn’t generate the image.', false);
+                        addMessage('Sorry, I couldn’t generate the image. There might be an issue with the image generation service.', false);
                     }
                 } else {
-                    addMessage('Please provide a description for the image.', false);
+                    addMessage('Please provide a description for the image you want to generate (e.g., "generate image: a cat in space").', false);
                 }
             } else {
                 // Handle regular chat message or image upload
@@ -441,8 +574,8 @@
                     const aiResponse = await generateAIResponse(message, image);
                     addMessage(aiResponse, false);
                 } catch (error) {
-                    console.error('Error:', error);
-                    addMessage('Sorry, an error occurred.', false);
+                    console.error('Error sending message to AI:', error);
+                    addMessage('Sorry, an error occurred while processing your request. Please try again.', false);
                 }
             }
         });
@@ -453,18 +586,36 @@
             let parts = [];
             if (text) parts.push({ text: text });
             if (imageBase64) parts.push({ inlineData: { mimeType: "image/jpeg", data: imageBase64 } });
+
+            // If no text and no image, return an empty response or prompt
+            if (parts.length === 0) {
+                return "Please enter a message or upload an image to start.";
+            }
+
             const requestBody = { contents: [{ role: "user", parts: parts }] };
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestBody),
-            });
-            const data = await response.json();
-            return data.candidates[0].content.parts[0].text || "Sorry, I couldn’t process that.";
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody),
+                });
+                const data = await response.json();
+                if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
+                     return data.candidates[0].content.parts[0].text;
+                } else {
+                    console.error("Unexpected API response structure:", data);
+                    return "Sorry, I received an unexpected response from the AI. Please try again.";
+                }
+            } catch (error) {
+                console.error('Error fetching from Gemini API:', error);
+                return "There was an issue connecting to the AI. Please check your network or try again later.";
+            }
         }
 
-        // OpenAI DALL-E API for image generation
+        // OpenAI DALL-E API for image generation (assuming you still want this functionality)
         async function generateImage(prompt) {
+            // NOTE: Using OpenAI API client-side for DALL-E is generally not recommended due to API key exposure.
+            // For production, you should proxy this request through a backend server.
             const apiUrl = 'https://api.openai.com/v1/images/generations';
             const requestBody = { prompt: prompt, n: 1, size: "512x512" };
             try {
@@ -477,9 +628,14 @@
                     body: JSON.stringify(requestBody),
                 });
                 const data = await response.json();
-                return data.data[0].url || null;
+                if (data.data && data.data[0] && data.data[0].url) {
+                    return data.data[0].url;
+                } else {
+                    console.error("OpenAI API image generation error:", data);
+                    return null;
+                }
             } catch (error) {
-                console.error('Image generation error:', error);
+                console.error('Image generation error with OpenAI API:', error);
                 return null;
             }
         }
@@ -488,7 +644,13 @@
         function addMessage(content, isUser) {
             const messageDiv = document.createElement('div');
             messageDiv.classList.add('message', isUser ? 'user-message' : 'ai-message');
-            messageDiv.innerHTML = isUser ? content : marked.parse(content);
+            // If it's a user message with an image, add it directly. Otherwise, parse markdown.
+            // This handles cases where user sends an image, and you don't want the image source itself parsed as markdown.
+            if (isUser && content.includes('<img src=')) {
+                messageDiv.innerHTML = content;
+            } else {
+                messageDiv.innerHTML = marked.parse(content);
+            }
             chatContainer.appendChild(messageDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
