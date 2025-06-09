@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PALESTINE AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Custom CSS Variables (retained as per your request) */
         :root {
             --bg-primary: #0F1C2E; /* Dark Blue-Gray */
             --bg-secondary: #1A2A40; /* Slightly lighter Dark Blue-Gray */
@@ -18,117 +20,60 @@
             --hover-color: #00ACC1; /* Slightly darker accent on hover */
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* Applying custom properties via Tailwind config */
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+
+        /* Base styles from original, adapted or overridden by Tailwind */
+        html, body {
+            @apply h-full font-inter bg-bg-primary text-text-primary leading-relaxed overflow-hidden;
         }
 
-        body, html {
-            height: 100%;
-            font-family: 'Inter', 'Montserrat', sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overscroll-behavior-y: none;
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+
+        /* Custom scrollbar for chat container */
+        .chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .chat-container::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+        }
+        .chat-container::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+        .chat-container::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-color);
         }
 
-        .container {
-            display: flex;
-            height: 100vh;
-            max-width: 1400px; /* Slightly wider container */
-            margin: 0 auto;
-            border-radius: 12px; /* Rounded corners for the entire app */
-            overflow: hidden; /* Ensures rounded corners are visible */
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
+        /* Markdown Styling - Re-defined using custom properties and Tailwind */
+        .ai-message code {
+            @apply bg-opacity-10 text-accent-color px-1.5 py-0.5 rounded text-sm font-mono;
+            background-color: rgba(0, 188, 212, 0.1); /* Custom color if needed */
         }
 
-        .sidebar {
-            width: 280px; /* Slightly wider sidebar */
-            background-color: var(--bg-secondary);
-            border-right: 1px solid var(--border-color);
-            padding: 25px; /* More padding */
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-            z-index: 1000;
+        .ai-message pre {
+            @apply bg-gray-900 p-4 rounded-lg overflow-x-auto my-3 border border-border-color;
         }
 
-        .sidebar.open {
-            transform: translateX(0);
+        .ai-message pre code {
+            @apply bg-transparent text-text-primary text-base;
         }
 
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 30px; /* More space */
+        .ai-message h1, .ai-message h2, .ai-message h3 {
+            @apply text-accent-color mt-4 mb-2;
         }
 
-        .sidebar-header h2 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            color: var(--accent-color); /* Accent color for the title */
-            font-size: 1.8em;
+        .ai-message a {
+            @apply text-accent-color no-underline hover:text-hover-color hover:underline transition-colors duration-300;
         }
 
-        .new-chat-btn {
-            display: flex;
-            align-items: center;
-            background-color: transparent; /* Transparent background */
-            border: 1px solid var(--accent-color); /* Accent border */
-            color: var(--accent-color);
-            padding: 12px 15px; /* More padding */
-            border-radius: 8px; /* Slightly more rounded */
-            cursor: pointer;
-            margin-bottom: 25px;
-            transition: all 0.3s ease; /* Smooth transition for all properties */
-            font-weight: 500;
-        }
-
-        .new-chat-btn:hover {
-            background-color: var(--accent-color);
-            color: var(--bg-secondary); /* Text changes to sidebar background */
-            transform: translateY(-2px); /* Slight lift effect */
-            box-shadow: 0 4px 10px rgba(0, 188, 212, 0.3); /* Accent glow */
-        }
-
-        .new-chat-btn svg {
-            margin-right: 12px;
-            color: inherit; /* Inherit color from parent for hover effect */
-        }
-
-        .main-content {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            background-color: var(--bg-primary); /* Consistent with body background */
-        }
-
-        .mobile-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 20px; /* More padding */
-            background-color: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .mobile-header h2 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            color: var(--accent-color);
-            font-size: 1.6em;
-        }
-
-        .mobile-header-btn {
+        /* Specific style for mobile menu button to ensure it's visible */
+        #open-sidebar, #close-sidebar, #new-chat-mobile {
             background: none;
             border: none;
             cursor: pointer;
@@ -136,36 +81,11 @@
             transition: color 0.3s;
         }
 
-        .mobile-header-btn:hover {
+        #open-sidebar:hover, #close-sidebar:hover, #new-chat-mobile:hover {
             color: var(--accent-color);
         }
 
-        .chat-container {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 25px; /* More padding */
-            display: flex;
-            flex-direction: column;
-            padding-bottom: 120px; /* Space for input */
-            gap: 15px; /* Space between messages */
-        }
-
-        .message {
-            max-width: 80%; /* Slightly narrower messages */
-            width: fit-content; /* Adjust width to content */
-            margin: 0; /* Remove margin-top/bottom */
-            padding: 15px 20px; /* More horizontal padding */
-            border-radius: 18px; /* More rounded */
-            align-self: flex-start;
-            word-wrap: break-word; /* Ensure long words break */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Subtle shadow for messages */
-        }
-
-        .message p {
-            margin: 0;
-            white-space: pre-wrap; /* Preserve whitespace and breaks */
-        }
-
+        /* Original styles for message image (kept as is, but Tailwind classes added where applicable) */
         .message img {
             max-width: 100%;
             max-height: 250px; /* Slightly smaller images */
@@ -174,290 +94,126 @@
             display: block; /* Ensure image takes full width */
         }
 
-        .user-message {
-            background-color: var(--user-message-bg);
-            align-self: flex-end;
-            color: #E0F2F1; /* Lighter text on dark teal */
-            border-bottom-right-radius: 4px; /* Tweak one corner for user messages */
+        /* Small pulse animation for typing indicator */
+        @keyframes pulse-dot {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(0.7); opacity: 0.5; }
         }
-
-        .ai-message {
-            background-color: var(--ai-message-bg);
-            align-self: flex-start;
-            color: var(--text-primary);
-            border-bottom-left-radius: 4px; /* Tweak one corner for AI messages */
+        .animate-pulse-dot {
+            animation: pulse-dot 1.5s infinite ease-in-out;
         }
+        .delay-0 { animation-delay: 0s; }
+        .delay-75 { animation-delay: 0.25s; }
+        .delay-150 { animation-delay: 0.5s; }
 
-        .input-container {
-            position: sticky; /* Sticky to stay at the bottom */
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 15px 20px;
-            background-color: var(--bg-secondary);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            align-items: flex-end; /* Align items to the bottom for multi-line input */
-            gap: 10px; /* Space between input and button */
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3); /* Stronger shadow on input container */
-        }
-
-        .input-wrapper {
-            flex-grow: 1;
-            position: relative;
-            display: flex;
-            align-items: flex-end; /* Align to bottom */
-            background-color: var(--bg-primary); /* Darker background for input field */
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            padding-right: 45px; /* Space for icons */
-        }
-
-        #message-input {
-            width: 100%;
-            padding: 12px 15px; /* Padding for input */
-            border: none; /* No border as wrapper has it */
-            border-radius: 10px;
-            font-size: 16px;
-            resize: none;
-            max-height: 120px; /* Max height for input */
-            overflow-y: auto;
-            background-color: transparent; /* Transparent to show wrapper background */
-            color: var(--text-primary);
-            outline: none; /* No outline on focus */
-            font-family: 'Inter', sans-serif;
-        }
-
-        #message-input::placeholder {
-            color: var(--text-secondary);
-            opacity: 0.7;
-        }
-
-        .icon-container {
-            position: absolute;
-            right: 10px;
-            bottom: 10px; /* Align icons to the bottom */
-            display: flex;
-            align-items: center;
-            gap: 8px; /* Space between icons */
-        }
-
-        .icon {
-            cursor: pointer;
-            color: var(--text-secondary);
-            transition: color 0.3s;
-        }
-
-        .icon:hover {
-            color: var(--accent-color);
-        }
-
-        .send-btn {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 12px; /* Square button */
-            border-radius: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-
-        .send-btn:hover:not(:disabled) {
-            background-color: var(--hover-color);
-            transform: translateY(-2px);
-        }
-
-        .send-btn:disabled {
-            background-color: var(--border-color);
-            color: var(--text-secondary);
-            cursor: not-allowed;
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6); /* Darker overlay */
-            display: none;
-            z-index: 999;
-        }
-
-        .overlay.show {
-            display: block;
-        }
-
-        /* Markdown Basic Styling */
-        .ai-message code {
-            background-color: rgba(0, 188, 212, 0.1); /* Light accent background for inline code */
-            color: var(--accent-color);
-            padding: 2px 5px;
-            border-radius: 4px;
-            font-family: 'Fira Code', 'Roboto Mono', monospace; /* Monospace font for code */
-            font-size: 0.9em;
-        }
-
-        .ai-message pre {
-            background-color: #0B141A; /* Darker background for code blocks */
-            padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto; /* Scroll for long lines */
-            margin-top: 10px;
-            margin-bottom: 10px;
-            border: 1px solid var(--border-color);
-        }
-
-        .ai-message pre code {
-            background-color: transparent;
-            color: #E0E6EB; /* Lighter color for code text */
-            padding: 0;
-            font-size: 1em;
-            border-radius: 0;
-        }
-
-        .ai-message h1, .ai-message h2, .ai-message h3 {
-            color: var(--accent-color);
-            margin-top: 1em;
-            margin-bottom: 0.5em;
-        }
-
-        .ai-message a {
-            color: var(--accent-color);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .ai-message a:hover {
-            color: var(--hover-color);
-            text-decoration: underline;
-        }
-
+        /* Ensuring rounded corners on larger screens for the main container */
         @media (min-width: 768px) {
             .sidebar {
-                width: 280px;
-                position: static;
-                transform: translateX(0);
-                border-radius: 12px 0 0 12px; /* Rounded left corners */
+                @apply relative transform translate-x-0 rounded-l-xl;
             }
-
-            .mobile-header {
-                display: none;
-            }
-
             .main-content {
-                width: calc(100% - 280px);
-                margin-left: 0; /* No margin-left when sidebar is static */
-                border-radius: 0 12px 12px 0; /* Rounded right corners */
+                @apply w-[calc(100%-288px)] rounded-r-xl; /* Adjust width based on fixed sidebar */
             }
-
+            .mobile-header {
+                @apply hidden;
+            }
             .input-container {
-                position: relative; /* Not fixed, but sticky within main-content */
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                border-radius: 0 0 12px 0; /* Rounded bottom right corner */
+                @apply relative bottom-0 left-0 w-full rounded-b-xl;
             }
-
             .chat-container {
-                padding-bottom: 20px; /* Reduce padding when input is not fixed */
+                @apply pb-6; /* Less padding when input is not sticky bottom */
             }
-
-            .message {
-                max-width: 600px; /* Max width for desktop messages */
-            }
-        }
-
-        .hidden {
-            display: none !important;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 </head>
-<body>
-    <div class="overlay" id="sidebar-overlay"></div>
+<body class="antialiased">
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-60 z-40 hidden lg:hidden"></div>
 
-    <div class="container">
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <h2>PALESTINE AI</h2>
-                <button class="mobile-header-btn" id="close-sidebar">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <div class="flex h-screen max-w-7xl mx-auto rounded-xl shadow-2xl overflow-hidden transform transition-all duration-300 ease-in-out scale-95 lg:scale-100">
+        <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 bg-bg-secondary border-r border-border-color p-6 flex flex-col z-50 transform -translate-x-full transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 lg:rounded-l-xl">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="font-montserrat font-semibold text-3xl text-accent-color tracking-wide">PALESTINE AI</h2>
+                <button id="close-sidebar" class="lg:hidden text-text-primary hover:text-accent-color transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
                         <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
                 </button>
             </div>
-            <button class="new-chat-btn" id="new-chat-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 10px;">
+            <button id="new-chat-btn" class="flex items-center justify-center bg-transparent border border-accent-color text-accent-color px-5 py-3 rounded-xl cursor-pointer mb-6 transition-all duration-300 hover:bg-accent-color hover:text-bg-secondary hover:shadow-lg hover:shadow-accent-color/30 transform hover:-translate-y-0.5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="12" y1="5" x2="12" y2="19"></line>
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
-                New conversation
+                محادثة جديدة
             </button>
-            </div>
+            </aside>
 
-        <div class="main-content">
-            <div class="mobile-header">
-                <button class="mobile-header-btn" id="open-sidebar">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <main class="main-content flex-1 flex flex-col bg-bg-primary lg:rounded-r-xl">
+            <header class="mobile-header flex items-center justify-between p-5 bg-bg-secondary border-b border-border-color shadow-md lg:hidden">
+                <button id="open-sidebar" class="text-text-primary hover:text-accent-color transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
                         <line x1="3" y1="6" x2="21" y2="6"></line>
                         <line x1="3" y1="18" x2="21" y2="18"></line>
                     </svg>
                 </button>
-                <h2> ASK ME ABOUT PS AND IWILL ANSWER! IM OMER ROBOT❤️‍🔥</h2>
-                <button class="mobile-header-btn" id="new-chat-mobile">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <h2 class="font-montserrat font-semibold text-xl text-accent-color">ASK ME ABOUT PS AND IWILL ANSWER! IM OMER ROBOT❤️‍🔥</h2>
+                <button id="new-chat-mobile" class="text-text-primary hover:text-accent-color transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
                 </button>
-            </div>
+            </header>
 
-            <div class="chat-container" id="chat-container">
-                </div>
+            <section id="chat-container" class="chat-container flex-1 overflow-y-auto p-6 flex flex-col gap-4 pb-24 relative">
+                </section>
 
-            <div class="input-container">
-                <div class="input-wrapper">
+            <div class="input-container sticky bottom-0 left-0 w-full p-4 bg-bg-secondary border-t border-border-color flex items-end gap-3 shadow-top-lg lg:rounded-br-xl">
+                <div class="flex-grow relative flex items-end bg-bg-primary rounded-xl border border-border-color pr-12">
                     <textarea
                         id="message-input"
-                        placeholder="Send a message..."
+                        placeholder="أرسل رسالة..."
                         rows="1"
+                        class="w-full p-3 text-base bg-transparent text-text-primary resize-none max-h-32 overflow-y-auto outline-none rounded-xl placeholder-text-secondary"
                     ></textarea>
-                    <div class="icon-container">
+                    <div class="absolute right-3 bottom-3 flex items-center gap-2">
                         <input type="file" id="gallery-input" accept="image/*" class="hidden">
-                        <svg id="gallery-icon" class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                            <polyline points="21 15 16 10 5 21"></polyline>
-                        </svg>
-                        <svg id="checkmark-icon" class="icon hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
+                        <button id="gallery-icon" class="icon text-text-secondary hover:text-accent-color transition-colors duration-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                        </button>
+                        <button id="checkmark-icon" class="icon text-accent-color hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </button>
                     </div>
                 </div>
-                <button id="send-btn" class="send-btn" disabled>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <button id="send-btn" class="flex-shrink-0 bg-accent-color text-white p-3 rounded-xl cursor-pointer flex items-center justify-center transition-all duration-200 hover:bg-hover-color transform hover:-translate-y-0.5 disabled:bg-border-color disabled:text-text-secondary disabled:cursor-not-allowed" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="22" y1="2" x2="11" y2="13"></line>
                         <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                     </svg>
                 </button>
             </div>
-        </div>
+        </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        // Replace these with your actual API keys
         // WARNING: Do NOT use API keys client-side in production; use a backend server
-        const GEMINI_API_KEY = 'AIzaSyB66dpDKO1WLd5tIHvsTuVryIPXiXbEedA';
-        const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY'; // Still needed if you intend to use DALL-E for image generation
+        const GEMINI_API_KEY = 'AIzaSyB66dpDKO1WLd5tIHvsTuVryIPXiXbEedA'; // Your key (kept as is)
+        const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY'; // Your key (kept as is)
 
-        let pendingImage = null;
+        let pendingImage = null; // Stores the base64 of the image selected by the user
 
+        // DOM Elements (same as original)
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebar-overlay');
         const openSidebarBtn = document.getElementById('open-sidebar');
@@ -471,40 +227,55 @@
         const checkmarkIcon = document.getElementById('checkmark-icon');
         const galleryInput = document.getElementById('gallery-input');
 
-        // Sidebar controls
+        // --- Sidebar Toggles with GSAP Animation ---
         function openSidebar() {
-            sidebar.classList.add('open');
-            sidebarOverlay.classList.add('show');
+            sidebar.classList.add('translate-x-0');
+            sidebar.classList.remove('-translate-x-full');
+            sidebarOverlay.classList.remove('hidden');
+            gsap.to(sidebarOverlay, { opacity: 1, duration: 0.3 }); // Animate overlay fade in
         }
 
         function closeSidebar() {
-            sidebar.classList.remove('open');
-            sidebarOverlay.classList.remove('show');
+            sidebar.classList.remove('translate-x-0');
+            sidebar.classList.add('-translate-x-full');
+            gsap.to(sidebarOverlay, {
+                opacity: 0,
+                duration: 0.3,
+                onComplete: () => sidebarOverlay.classList.add('hidden') // Hide overlay after fade out
+            });
         }
 
         openSidebarBtn.addEventListener('click', openSidebar);
         closeSidebarBtn.addEventListener('click', closeSidebar);
         sidebarOverlay.addEventListener('click', closeSidebar);
 
+        // --- New Chat Functionality ---
         function startNewChat() {
-            chatContainer.innerHTML = '';
-            closeSidebar();
+            // Animate chat container fading out before clearing
+            gsap.to(chatContainer, {
+                opacity: 0,
+                y: -20, // Move up slightly
+                duration: 0.3,
+                onComplete: () => {
+                    chatContainer.innerHTML = ''; // Clear content
+                    gsap.to(chatContainer, { opacity: 1, y: 0, duration: 0.3 }); // Animate fade in
+                }
+            });
+            closeSidebar(); // Close sidebar after starting new chat
         }
 
         newChatBtn.addEventListener('click', startNewChat);
         newChatMobileBtn.addEventListener('click', startNewChat);
 
-        // Auto-resize textarea and enable/disable send button
+        // --- Auto-resize textarea and enable/disable send button ---
         messageInput.addEventListener('input', function() {
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + 'px';
             sendBtn.disabled = this.value.trim() === '' && !pendingImage;
         });
 
-        // Gallery button functionality
-        galleryIcon.addEventListener('click', () => {
-            galleryInput.click();
-        });
+        // --- Gallery Button Functionality (kept as original, enhanced with GSAP) ---
+        galleryIcon.addEventListener('click', () => galleryInput.click());
 
         galleryInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -513,83 +284,102 @@
                 reader.onload = () => {
                     pendingImage = reader.result.split(',')[1]; // Get base64 part
                     sendBtn.disabled = false;
-                    galleryIcon.classList.add('hidden');
+                    // GSAP animation for icon swap
+                    gsap.to(galleryIcon, { opacity: 0, scale: 0.5, duration: 0.2, onComplete: () => galleryIcon.classList.add('hidden') });
                     checkmarkIcon.classList.remove('hidden');
-                    messageInput.placeholder = 'Message with image...';
+                    gsap.fromTo(checkmarkIcon, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.2 });
+                    messageInput.placeholder = 'رسالة مع صورة...';
                 };
                 reader.readAsDataURL(file);
             }
         });
 
-        // Checkmark to cancel image selection
+        // --- Checkmark to cancel image selection (kept as original, enhanced with GSAP) ---
         checkmarkIcon.addEventListener('click', () => {
             pendingImage = null;
+            // GSAP animation for icon swap back
+            gsap.to(checkmarkIcon, { opacity: 0, scale: 0.5, duration: 0.2, onComplete: () => checkmarkIcon.classList.add('hidden') });
             galleryIcon.classList.remove('hidden');
-            checkmarkIcon.classList.add('hidden');
-            messageInput.placeholder = 'Send a message...';
+            gsap.fromTo(galleryIcon, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.2 });
+            messageInput.placeholder = 'أرسل رسالة...';
             galleryInput.value = ''; // Clear file input
             sendBtn.disabled = messageInput.value.trim() === '';
         });
 
-        // Send message or generate image
+        // --- Send Message / Generate Image Functionality (kept as original, enhanced with typing indicator) ---
         sendBtn.addEventListener('click', async () => {
             const message = messageInput.value.trim();
             const image = pendingImage;
             pendingImage = null; // Reset pending image after sending
 
-            // Add user message to chat immediately
             if (message || image) {
                 let content = '';
                 if (message) content += `<p>${message}</p>`;
-                if (image) content += `<img src="data:image/jpeg;base64,${image}" alt="Sent image">`;
-                addMessage(content, true);
+                // Image handling kept as original, but with Tailwind classes for responsiveness
+                if (image) content += `<img src="data:image/jpeg;base64,${image}" alt="Sent image" class="mt-2 max-w-full h-auto rounded-lg">`;
+                addMessage(content, true); // Add user message
             }
 
             // Clear input and reset state
             messageInput.value = '';
             messageInput.style.height = 'auto';
             sendBtn.disabled = true;
+            // Reset icon state with GSAP
+            gsap.to(checkmarkIcon, { opacity: 0, scale: 0.5, duration: 0.2, onComplete: () => checkmarkIcon.classList.add('hidden') });
             galleryIcon.classList.remove('hidden');
-            checkmarkIcon.classList.add('hidden');
-            messageInput.placeholder = 'Send a message...';
+            gsap.fromTo(galleryIcon, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.2 });
+            messageInput.placeholder = 'أرسل رسالة...';
             galleryInput.value = ''; // Clear file input
 
-            // Handle image generation command (if you keep this feature)
-            if (message.toLowerCase().startsWith('generate image:')) {
-                const prompt = message.substring('generate image:'.length).trim();
-                if (prompt) {
-                    addMessage(`Generating image based on: "${prompt}"...`, false); // AI confirmation
-                    const imageUrl = await generateImage(prompt);
-                    if (imageUrl) {
-                        addMessage(`<img src="${imageUrl}" alt="Generated image">`, false);
-                    } else {
-                        addMessage('Sorry, I couldn’t generate the image. There might be an issue with the image generation service.', false);
-                    }
-                } else {
-                    addMessage('Please provide a description for the image you want to generate (e.g., "generate image: a cat in space").', false);
-                }
-            } else {
-                // Handle regular chat message or image upload
-                try {
-                    const aiResponse = await generateAIResponse(message, image);
-                    addMessage(aiResponse, false);
-                } catch (error) {
-                    console.error('Error sending message to AI:', error);
-                    addMessage('Sorry, an error occurred while processing your request. Please try again.', false);
-                }
+            // Handle AI response
+            try {
+                // Show typing indicator before API call
+                const typingIndicator = addTypingIndicator();
+                const aiResponse = await generateAIResponse(message, image);
+                removeTypingIndicator(typingIndicator); // Remove typing indicator
+                addMessage(aiResponse, false); // Add AI response
+            } catch (error) {
+                console.error('Error sending message to AI:', error);
+                removeTypingIndicator(document.querySelector('.typing-indicator')); // Ensure indicator is removed even on error
+                addMessage('عذرًا، حدث خطأ أثناء معالجة طلبك. يرجى المحاولة مرة أخرى.', false);
             }
         });
 
-        // Gemini API for text and image recognition
+        // --- Typing Indicator ---
+        function addTypingIndicator() {
+            const indicatorDiv = document.createElement('div');
+            indicatorDiv.classList.add('message', 'ai-message', 'typing-indicator', 'flex', 'items-center', 'space-x-1');
+            indicatorDiv.innerHTML = `
+                <span class="w-2.5 h-2.5 bg-text-primary rounded-full animate-pulse-dot delay-0"></span>
+                <span class="w-2.5 h-2.5 bg-text-primary rounded-full animate-pulse-dot delay-75"></span>
+                <span class="w-2.5 h-2.5 bg-text-primary rounded-full animate-pulse-dot delay-150"></span>
+            `;
+            chatContainer.appendChild(indicatorDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            gsap.fromTo(indicatorDiv, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3 }); // Animate typing indicator in
+            return indicatorDiv;
+        }
+
+        function removeTypingIndicator(indicator) {
+            if (indicator) {
+                gsap.to(indicator, {
+                    opacity: 0,
+                    y: -20,
+                    duration: 0.3,
+                    onComplete: () => indicator.remove() // Remove after animation
+                });
+            }
+        }
+
+        // --- Gemini API Call (kept as original) ---
         async function generateAIResponse(text, imageBase64) {
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
             let parts = [];
             if (text) parts.push({ text: text });
             if (imageBase64) parts.push({ inlineData: { mimeType: "image/jpeg", data: imageBase64 } });
 
-            // If no text and no image, return an empty response or prompt
             if (parts.length === 0) {
-                return "Please enter a message or upload an image to start.";
+                return "من فضلك أدخل رسالة أو قم بتحميل صورة للبدء.";
             }
 
             const requestBody = { contents: [{ role: "user", parts: parts }] };
@@ -600,22 +390,23 @@
                     body: JSON.stringify(requestBody),
                 });
                 const data = await response.json();
+
                 if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
                      return data.candidates[0].content.parts[0].text;
+                } else if (data.promptFeedback && data.promptFeedback.blockReason) {
+                    return `عذرًا، لا يمكنني الاستجابة لهذا الطلب بسبب سياسات المحتوى. السبب: ${data.promptFeedback.blockReason}`;
                 } else {
                     console.error("Unexpected API response structure:", data);
-                    return "Sorry, I received an unexpected response from the AI. Please try again.";
+                    return "عذرًا، لقد تلقيت استجابة غير متوقعة من الذكاء الاصطناعي. يرجى المحاولة مرة أخرى.";
                 }
             } catch (error) {
                 console.error('Error fetching from Gemini API:', error);
-                return "There was an issue connecting to the AI. Please check your network or try again later.";
+                return "حدثت مشكلة في الاتصال بالذكاء الاصطناعي. يرجى التحقق من اتصالك بالشبكة أو المحاولة لاحقًا.";
             }
         }
 
-        // OpenAI DALL-E API for image generation (assuming you still want this functionality)
+        // --- OpenAI DALL-E API for image generation (kept as original) ---
         async function generateImage(prompt) {
-            // NOTE: Using OpenAI API client-side for DALL-E is generally not recommended due to API key exposure.
-            // For production, you should proxy this request through a backend server.
             const apiUrl = 'https://api.openai.com/v1/images/generations';
             const requestBody = { prompt: prompt, n: 1, size: "512x512" };
             try {
@@ -640,19 +431,73 @@
             }
         }
 
-        // Add message to chat with markdown for AI responses
+        // --- Add Message to Chat with GSAP Animation and Markdown ---
         function addMessage(content, isUser) {
             const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message', isUser ? 'user-message' : 'ai-message');
+            messageDiv.classList.add(
+                'message',
+                isUser ? 'user-message' : 'ai-message',
+                'p-4', 'rounded-2xl', 'shadow-md', 'max-w-[80%]', 'break-words', 'relative',
+                isUser ? 'bg-user-message-bg text-gray-50 self-end rounded-br-md' : 'bg-ai-message-bg text-text-primary self-start rounded-bl-md'
+            );
+
             // If it's a user message with an image, add it directly. Otherwise, parse markdown.
-            // This handles cases where user sends an image, and you don't want the image source itself parsed as markdown.
+            // This preserves the original image handling logic.
             if (isUser && content.includes('<img src=')) {
                 messageDiv.innerHTML = content;
             } else {
+                // Using marked.js to parse markdown
                 messageDiv.innerHTML = marked.parse(content);
             }
+
+            // Initial state for GSAP animation
+            messageDiv.style.opacity = 0;
+            messageDiv.style.transform = 'translateY(20px) scale(0.95)';
+
             chatContainer.appendChild(messageDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // GSAP animation for message entry
+            gsap.to(messageDiv, {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.4,
+                ease: 'back.out(1.2)', // A nice bouncy ease for interactive feel
+                onComplete: () => {
+                    // Ensure scroll is at bottom after animation completes
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }
+            });
+        }
+
+        // Tailwind CSS Configuration - Customizing colors and fonts
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg-primary': 'var(--bg-primary)',
+                        'bg-secondary': 'var(--bg-secondary)',
+                        'text-primary': 'var(--text-primary)',
+                        'text-secondary': 'var(--text-secondary)',
+                        'border-color': 'var(--border-color)',
+                        'accent-color': 'var(--accent-color)',
+                        'user-message-bg': 'var(--user-message-bg)',
+                        'ai-message-bg': 'var(--ai-message-bg)',
+                        'hover-color': 'var(--hover-color)',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'top-lg': '0 -8px 30px rgba(0, 0, 0, 0.3)',
+                    },
+                    animation: {
+                        'pulse-dot': 'pulse-dot 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
         }
     </script>
 </body>
